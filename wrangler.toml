@@ -1,23 +1,21 @@
 name = "edge-chat-demo"
-type = "javascript"
+main = "src/chat.mjs"         # ← your old build.upload.dir + main ⇒ src/chat.mjs
 workers_dev = true
-compatibility_date = "2021-11-08"
-# Add your account ID here
-account_id = ""
+compatibility_date = "2021-11-08"  # keep for now; bump later if you want
 
-[build.upload]
-format = "modules"
-dir = "src"
-main = "./chat.mjs"
-rules = [{type = "Data", globs = ["**/*.html"]}]
+# If you import .html files inside your Worker (as text/data), keep this:
+rules = [
+  { type = "Data", globs = ["**/*.html"] }
+]
 
 [durable_objects]
 bindings = [
-  { name = "rooms", class_name = "ChatRoom" },
+  { name = "rooms",    class_name = "ChatRoom" },
   { name = "limiters", class_name = "RateLimiter" }
 ]
 
-# Indicate that you want the ChatRoom and RateLimiter classes to be callable as Durable Objects.
 [[migrations]]
-tag = "v1" # Should be unique for each entry
+tag = "v1" 
 new_classes = ["ChatRoom", "RateLimiter"]
+# If you're on the Free plan or want the newer backend, use this instead of the line above:
+# new_sqlite_classes = ["ChatRoom", "RateLimiter"]
